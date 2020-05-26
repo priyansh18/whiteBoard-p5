@@ -2,10 +2,9 @@ var radius;
 var c;
 
 function setup() {
-  createP("Online Tutor");
   // creating Canvas
-  let cnv = createCanvas(1200, 600);
-  cnv.position(200, 0);
+  let cnv = createCanvas(1300, 800);
+  cnv.position(280, 0);
   slider = createSlider(1, 25, 10);
   eraser = createButton("clear");
   eraser.mousePressed(changeBG);
@@ -20,7 +19,7 @@ function draw() {
 }
 
 function mouseClicked() {
-  if (mouseX > 400) {
+  if (mouseX > 1300) {
     c = get(mouseX, mouseY);
     checkbox.checked(false);
   } else {
@@ -34,7 +33,7 @@ function mouseDragged() {
   } else {
     stroke(c);
   }
-  if (mouseX < 390) {
+  if (mouseX < 250) {
     strokeWeight(slider.value());
     line(mouseX, mouseY, pmouseX, pmouseY);
   }

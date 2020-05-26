@@ -28,7 +28,7 @@ body {
 }
 #sidebar .row p,
 span {
-  font-size: 18px;
+  font-size: 20px;
   color: rgb(230, 230, 230);
   font-weight: 400;
   margin-bottom: 8px;
@@ -46,11 +46,6 @@ span {
   margin-top: 3px;
 }
 #sidebar .row a#clearCanvas,
-a#saveCanvas {
-  cursor: pointer;
-  color: rgb(230, 230, 230);
-}
-
 #sidebar input[type="range"] {
   margin: auto;
   outline: none;
