@@ -4,8 +4,8 @@ var c;
 function setup() {
   createP("Online Tutor");
   // creating Canvas
-  let cnv = createCanvas(1200, 700);
-  cnv.position(20, 100);
+  let cnv = createCanvas(1200, 600);
+  cnv.position(200, 0);
   slider = createSlider(1, 25, 10);
   eraser = createButton("clear");
   eraser.mousePressed(changeBG);
