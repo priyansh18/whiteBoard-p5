@@ -22,11 +22,11 @@ function setup() {
     document.body.style.background = bgColor;
   };
 
-  //----------------Size range property-----------//
+  //----------------Size Slider property-----------//
   var drawSize = 4
   //Implementing Event Handler on Size slider
-  document.getElementById('sizeRange').onchange = function(){
-		var size = map(document.getElementById('sizeRange').value(2,25,4,25));
+  document.getElementById('sizeslider').onchange = function(){
+		var size = map(document.getElementById('sizeslider').value(2,25,4,25));
 		drawSize = size;
 
   document.getElementsByTagName("canvas")[0].style.cursor = "crosshair";
