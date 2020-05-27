@@ -1,55 +1,24 @@
-var radius;
-var c;
+var brushColor;
+var bgColor;
+var drawSize;
+var penStyle;
+var canvas;
 
 function setup() {
   // creating Canvas
-  let cnv = createCanvas(1300, 800);
-  cnv.position(280, 0);
-  slider = createSlider(1, 25, 10);
-  eraser = createButton("clear");
-  eraser.mousePressed(changeBG);
-  checkbox = createCheckbox("Eraser", false);
-  c = color(255, 0, 0);
-  background(0);
-  colorMode(RGB);
-}
+  let canvas = createCanvas(1300, 800);
 
-function draw() {
-  radius = slider.value();
-}
+  //Brush colour property
+  brushColor = "#151718";
+  document.getElementById("brushColor").value = brushColor;
+  document.getElementById("brushColor").onchange = function () {
+    brushColor = document.getElementById("brushColor").value;
+  };
 
-function mouseClicked() {
-  if (mouseX > 1300) {
-    c = get(mouseX, mouseY);
-    checkbox.checked(false);
-  } else {
-    stampRectangle(c);
-  }
+  document.getElementsByTagName("canvas")[0].style.cursor = "crosshair";
 }
 
 function mouseDragged() {
-  if (checkbox.checked()) {
-    stroke(255);
-  } else {
-    stroke(c);
-  }
-  if (mouseX < 250) {
-    strokeWeight(slider.value());
-    line(mouseX, mouseY, pmouseX, pmouseY);
-  }
-}
-
-function changeBG() {
-  background(255);
-  createColorPicker();
-}
-
-function stampRectangle(c) {
-  fill(c);
-  noStroke();
-  rect(mouseX, mouseY, slider.value(), slider.value());
-}
-
-function eraserSwitch() {
-  //
+  fill(brushColor);
+  stroke(brushColor);
 }
