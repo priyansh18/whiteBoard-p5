@@ -1,38 +1,77 @@
+var pencilColor;
+var bgColor;
+var drawSize;
+var penStyle;
+var paint;
 
 function setup() {
-  // creating Canvas
-  let canvas = createCanvas(1300, 800);
+  paint = createCanvas(innerWidth - 250, innerHeight);
+  pencilColor = "red";
+  bgColor = "#c8c8c8";
+  drawSize = 3;
+  penStyle = "pencil";
 
-  //----------------Brush colour property----------------//
-   var brushColor = "#151168";
-  //Getting Element
-  document.getElementById("brushColor").value = brushColor;
-  //Implement Event Handler on brush colour
-  document.getElementById("brushColor").onchange = function () {
-    brushColor = document.getElementById("brushColor").value;
+  document.getElementsByTagName("canvas")[0].style.cursor = "hand";
+
+  document.getElementById("colors").onclick = function (e) {
+    const color = e.target.dataset.color;
+    pencilColor = color;
   };
 
-  //----------------Background colour property-----------//
-  var bgColor = "#c8c8c8";
-  // Getting Element
-  document.getElementById("bgColor").value = bgColor;
-  //Implement Event Handler on brush colour
-  document.getElementById("bgColor").onchange = function () {
-    bgColor = document.getElementById("bgColor").value;
+  document.getElementById("bg-colors").onclick = function (e) {
+    const color = e.target.dataset.color;
+    bgColor = color;
     document.body.style.background = bgColor;
   };
+  document.getElementById("sizeRange").onchange = function () {
+    var size = map(document.getElementById("sizeRange").value, 2, 20, 4, 20);
+    drawSize = size;
+  };
 
-  //----------------Size Slider property-----------//
-  var drawSize = 4
-  //Implementing Event Handler on Size slider
-  document.getElementById('sizeslider').onchange = function(){
-		var size = map(document.getElementById('sizeslider').value(2,25,4,25));
-		drawSize = size;
+  document.getElementById("pencil").onchange = function () {
+    penStyle = "pencil";
+    document.getElementById("pencil").checked = true;
+    document.getElementById("eraser").checked = false;
+    document.getElementsByTagName("canvas")[0].style.cursor = "hand";
+  };
 
-  document.getElementsByTagName("canvas")[0].style.cursor = "crosshair";
+  document.getElementById("eraser").onchange = function () {
+    penStyle = "eraser";
+    document.getElementById("pencil").checked = false;
+    document.getElementById("eraser").checked = true;
+    document.getElementsByTagName("canvas")[0].style.cursor = "cell";
+  };
+
+  document.getElementById("clearCanvas").onclick = function (e) {
+    e.preventDefault();
+    if (confirm("Do you want to clear paint")) {
+      setup();
+      document.body.style.background = "#c8c8c8";
+    } else {
+      return;
+    }
+  };
+
+  window.onresize = function () {
+    document.getElementsByTagName("canvas")[0].style.width = innerWidth - 250;
+    document.getElementsByTagName("canvas")[0].style.height = innerHeight;
+  };
 }
 
 function mouseDragged() {
-  fill(brushColor);
-  stroke(brushColor);
+  console.log(pencilColor, penStyle, drawSize);
+  fill(pencilColor);
+  stroke(pencilColor);
+  strokeWeight(drawSize);
+  if (penStyle === "brush") {
+    ellipse(mouseX, mouseY, drawSize, drawSize);
+  } else if (penStyle === "pencil") {
+    line(pmouseX, pmouseY, mouseX, mouseY);
+  } else if (penStyle === "square") {
+    rect(mouseX, mouseY, drawSize / 2, drawSize / 2);
+  } else if (penStyle === "eraser") {
+    stroke("#c8c8c8");
+    fill("#c8c8c8");
+    rect(mouseX, mouseY, drawSize / 1.2, drawSize / 1.2);
+  }
 }
