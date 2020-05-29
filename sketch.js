@@ -7,7 +7,7 @@ var paint;
 function setup() {
   paint = createCanvas(innerWidth - 250, innerHeight);
   pencilColor = "red";
-  bgColor = "#c8c8c8=";
+  bgColor = "#c8c8c8";
   drawSize = 3;
   penStyle = "pencil";
 
@@ -28,18 +28,85 @@ function setup() {
     drawSize = size;
   };
 
+  //------------------Pen Type-----------------//
+
   document.getElementById("pencil").onchange = function () {
     penStyle = "pencil";
     document.getElementById("pencil").checked = true;
     document.getElementById("eraser").checked = false;
+    document.getElementById("line").checked = false;
+    document.getElementById("rectangle").checked = false;
+    document.getElementById("circle").checked = false;
+    document.getElementById("oval").checked = false;
+    document.getElementById("square").checked = false;
     document.getElementsByTagName("canvas")[0].style.cursor = "hand";
   };
 
   document.getElementById("eraser").onchange = function () {
     penStyle = "eraser";
-    document.getElementById("pencil").checked = false;
     document.getElementById("eraser").checked = true;
+    document.getElementById("pencil").checked = false;
+    document.getElementById("line").checked = false;
+    document.getElementById("rectangle").checked = false;
+    document.getElementById("circle").checked = false;
+    document.getElementById("oval").checked = false;
+    document.getElementById("square").checked = false;
     document.getElementsByTagName("canvas")[0].style.cursor = "cell";
+  };
+  document.getElementById("line").onchange = function () {
+    penStyle = "line";
+    document.getElementById("line").checked = true;
+    document.getElementById("pencil").checked = false;
+    document.getElementById("eraser").checked = false;
+    document.getElementById("rectangle").checked = false;
+    document.getElementById("circle").checked = false;
+    document.getElementById("oval").checked = false;
+    document.getElementById("square").checked = false;
+    document.getElementsByTagName("canvas")[0].style.cursor = "hand";
+  };
+  document.getElementById("circle").onchange = function () {
+    penStyle = "circle";
+    document.getElementById("circle").checked = true;
+    document.getElementById("rectangle").checked = false;
+    document.getElementById("pencil").checked = false;
+    document.getElementById("eraser").checked = false;
+    document.getElementById("line").checked = false;
+    document.getElementById("oval").checked = false;
+    document.getElementById("square").checked = false;
+    document.getElementsByTagName("canvas")[0].style.cursor = "hand";
+  };
+  document.getElementById("rectangle").onchange = function () {
+    penStyle = "rectangle";
+    document.getElementById("rectangle").checked = true;
+    document.getElementById("pencil").checked = false;
+    document.getElementById("eraser").checked = false;
+    document.getElementById("line").checked = false;
+    document.getElementById("circle").checked = false;
+    document.getElementById("oval").checked = false;
+    document.getElementById("square").checked = false;
+    document.getElementsByTagName("canvas")[0].style.cursor = "hand";
+  };
+  document.getElementById("oval").onchange = function () {
+    penStyle = "oval";
+    document.getElementById("oval").checked = true;
+    document.getElementById("pencil").checked = false;
+    document.getElementById("eraser").checked = false;
+    document.getElementById("line").checked = false;
+    document.getElementById("rectangle").checked = false;
+    document.getElementById("circle").checked = false;
+    document.getElementById("square").checked = false;
+    document.getElementsByTagName("canvas")[0].style.cursor = "hand";
+  };
+  document.getElementById("square").onchange = function () {
+    penStyle = "square";
+    document.getElementById("square").checked = true;
+    document.getElementById("pencil").checked = false;
+    document.getElementById("eraser").checked = false;
+    document.getElementById("line").checked = false;
+    document.getElementById("rectangle").checked = false;
+    document.getElementById("circle").checked = false;
+    document.getElementById("oval").checked = false;
+    document.getElementsByTagName("canvas")[0].style.cursor = "hand";
   };
 
   document.getElementById("clearCanvas").onclick = function (e) {
