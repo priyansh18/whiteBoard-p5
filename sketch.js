@@ -7,7 +7,7 @@ var paint;
 function setup() {
   paint = createCanvas(innerWidth - 250, innerHeight);
   pencilColor = "red";
-  bgColor = "#c8c8c8";
+  bgColor = "#c8c8c8=";
   drawSize = 3;
   penStyle = "pencil";
 
@@ -46,7 +46,7 @@ function setup() {
     e.preventDefault();
     if (confirm("Do you want to clear paint")) {
       setup();
-      document.body.style.background = "#c8c8c8";
+      document.body.style.background = "#fff";
     } else {
       return;
     }
