@@ -3,13 +3,15 @@ var bgColor;
 var drawSize;
 var penStyle;
 var paint;
+var locations;
 
 function setup() {
   paint = createCanvas(innerWidth - 250, innerHeight);
   pencilColor = "red";
-  bgColor = "#c8c8c8";
+  bgColor = "#ffffff";
   drawSize = 3;
   penStyle = "pencil";
+  locations = [];
 
   document.getElementsByTagName("canvas")[0].style.cursor = "hand";
 
@@ -126,16 +128,41 @@ function setup() {
 }
 
 function mouseDragged() {
-  console.log(pencilColor, penStyle, drawSize);
+  // console.log(pencilColor, penStyle, drawSize);
   fill(pencilColor);
   stroke(pencilColor);
   strokeWeight(drawSize);
-
-  if (penStyle === "pencil") {
-    line(pmouseX, pmouseY, mouseX, mouseY);
-  } else if (penStyle === "eraser") {
-    stroke(bgColor);
-    fill("#c8c8c8");
-    rect(mouseX, mouseY, drawSize / 1.2, drawSize / 1.2);
+  if (locations.length == 2) {
+    locations.pop();
+    locations.push([mouseX, mouseY]);
+  } else {
+    locations.push([mouseX, mouseY]);
   }
+
+  if (locations.length >= 2) {
+    if (penStyle === "pencil") {
+      line(pmouseX, pmouseY, mouseX, mouseY);
+    } else if (penStyle === "eraser") {
+      stroke(bgColor);
+      fill("#c8c8c8");
+      rect(mouseX, mouseY, drawSize / 1.2, drawSize / 1.2);
+    } else if (penStyle === "rectangle") {
+      stroke(pencilColor);
+      fill(bgColor);
+      const width = locations[1][0] - locations[0][0];
+      const height = locations[1][1] - locations[0][1];
+      console.log(width, height);
+      rect(locations[0][0], locations[0][1], width, height);
+    } else if (penStyle === "circle") {
+      stroke(pencilColor);
+      fill(bgColor);
+      const radius = locations[1][0] - locations[0][0];
+      ellipse(locations[0][0], locations[0][1], radius / 2, radius / 2);
+      // ellipse(locations[0][0], locations[0][1], 2 * radius);
+    }
+  }
+}
+
+function mouseReleased() {
+  locations = [];
 }
