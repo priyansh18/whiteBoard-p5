@@ -63,14 +63,11 @@ function mouseDragged() {
   fill(pencilColor);
   stroke(pencilColor);
   strokeWeight(drawSize);
-  if (penStyle === "brush") {
-    ellipse(mouseX, mouseY, drawSize, drawSize);
-  } else if (penStyle === "pencil") {
+
+  if (penStyle === "pencil") {
     line(pmouseX, pmouseY, mouseX, mouseY);
-  } else if (penStyle === "square") {
-    rect(mouseX, mouseY, drawSize / 2, drawSize / 2);
   } else if (penStyle === "eraser") {
-    stroke("#c8c8c8");
+    stroke(bgColor);
     fill("#c8c8c8");
     rect(mouseX, mouseY, drawSize / 1.2, drawSize / 1.2);
   }
