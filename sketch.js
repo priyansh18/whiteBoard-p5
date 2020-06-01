@@ -3,7 +3,9 @@ var bgColor;
 var drawSize;
 var penStyle;
 var paint;
-var locations;
+// var locations;
+var lastX;
+var lastY;
 
 function setup() {
   paint = createCanvas(innerWidth - 250, innerHeight);
@@ -12,7 +14,6 @@ function setup() {
   drawSize = 3;
   penStyle = "pencil";
   locations = [];
-
   document.getElementsByTagName("canvas")[0].style.cursor = "hand";
 
   document.getElementById("colors").onclick = function (e) {
@@ -39,7 +40,6 @@ function setup() {
     document.getElementById("line").checked = false;
     document.getElementById("rectangle").checked = false;
     document.getElementById("circle").checked = false;
-    document.getElementById("oval").checked = false;
     document.getElementById("square").checked = false;
     document.getElementsByTagName("canvas")[0].style.cursor = "hand";
   };
@@ -51,7 +51,6 @@ function setup() {
     document.getElementById("line").checked = false;
     document.getElementById("rectangle").checked = false;
     document.getElementById("circle").checked = false;
-    document.getElementById("oval").checked = false;
     document.getElementById("square").checked = false;
     document.getElementsByTagName("canvas")[0].style.cursor = "cell";
   };
@@ -62,7 +61,6 @@ function setup() {
     document.getElementById("eraser").checked = false;
     document.getElementById("rectangle").checked = false;
     document.getElementById("circle").checked = false;
-    document.getElementById("oval").checked = false;
     document.getElementById("square").checked = false;
     document.getElementsByTagName("canvas")[0].style.cursor = "hand";
   };
@@ -73,7 +71,6 @@ function setup() {
     document.getElementById("pencil").checked = false;
     document.getElementById("eraser").checked = false;
     document.getElementById("line").checked = false;
-    document.getElementById("oval").checked = false;
     document.getElementById("square").checked = false;
     document.getElementsByTagName("canvas")[0].style.cursor = "hand";
   };
@@ -83,18 +80,6 @@ function setup() {
     document.getElementById("pencil").checked = false;
     document.getElementById("eraser").checked = false;
     document.getElementById("line").checked = false;
-    document.getElementById("circle").checked = false;
-    document.getElementById("oval").checked = false;
-    document.getElementById("square").checked = false;
-    document.getElementsByTagName("canvas")[0].style.cursor = "hand";
-  };
-  document.getElementById("oval").onchange = function () {
-    penStyle = "oval";
-    document.getElementById("oval").checked = true;
-    document.getElementById("pencil").checked = false;
-    document.getElementById("eraser").checked = false;
-    document.getElementById("line").checked = false;
-    document.getElementById("rectangle").checked = false;
     document.getElementById("circle").checked = false;
     document.getElementById("square").checked = false;
     document.getElementsByTagName("canvas")[0].style.cursor = "hand";
@@ -107,7 +92,6 @@ function setup() {
     document.getElementById("line").checked = false;
     document.getElementById("rectangle").checked = false;
     document.getElementById("circle").checked = false;
-    document.getElementById("oval").checked = false;
     document.getElementsByTagName("canvas")[0].style.cursor = "hand";
   };
 
@@ -129,14 +113,16 @@ function setup() {
 
 function mouseDragged() {
   // console.log(pencilColor, penStyle, drawSize);
+  console.log(locations);
   fill(pencilColor);
   stroke(pencilColor);
   strokeWeight(drawSize);
   if (locations.length == 2) {
-    locations.pop();
-    locations.push([mouseX, mouseY]);
+    [lastX, lastY] = locations.pop();
+    locations.push([parseInt(pmouseX), parseInt(pmouseY)]);
   } else {
-    locations.push([mouseX, mouseY]);
+    [lastX, lastY] = [pmouseX, pmouseY];
+    locations.push([parseInt(pmouseX), parseInt(pmouseY)]);
   }
 
   if (locations.length >= 2) {
@@ -144,21 +130,36 @@ function mouseDragged() {
       line(pmouseX, pmouseY, mouseX, mouseY);
     } else if (penStyle === "eraser") {
       stroke(bgColor);
-      fill("#c8c8c8");
+      fill(bgColor);
       rect(mouseX, mouseY, drawSize / 1.2, drawSize / 1.2);
     } else if (penStyle === "rectangle") {
-      stroke(pencilColor);
+      // erase the last one
+      const widthLast = lastX - locations[0][0];
+      const heightLast = lastY - locations[0][1];
+      stroke(bgColor);
       fill(bgColor);
-      const width = locations[1][0] - locations[0][0];
+      rect(locations[0][0], locations[0][1], widthLast, heightLast);
+      // draw new one
+      const width = parseInt(locations[1][0] - locations[0][0]);
       const height = locations[1][1] - locations[0][1];
-      console.log(width, height);
-      rect(locations[0][0], locations[0][1], width, height);
-    } else if (penStyle === "circle") {
       stroke(pencilColor);
       fill(bgColor);
-      const radius = locations[1][0] - locations[0][0];
-      ellipse(locations[0][0], locations[0][1], radius / 2, radius / 2);
-      // ellipse(locations[0][0], locations[0][1], 2 * radius);
+      rect(locations[0][0], locations[0][1], width, height);
+    } else if (penStyle === "square") {
+      const height = locations[1][0] - locations[0][0];
+      stroke(pencilColor);
+      fill(bgColor);
+      rect(locations[0][0], locations[0][1], height, height);
+    } else if (penStyle === "circle") {
+      const x = locations[1][0] - locations[0][0];
+      const y = locations[1][1] - locations[0][1];
+      stroke(pencilColor);
+      fill(bgColor);
+      const radius = sqrt(y * y + x * x);
+      ellipse(mouseX, mouseY, radius * 2, radius * 2);
+    } else if (penStyle === "line") {
+      stroke(pencilColor);
+      line(locations[0][0], locations[0][1], locations[1][0], locations[1][1]);
     }
   }
 }
