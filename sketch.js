@@ -3,10 +3,11 @@ var bgColor;
 var drawSize;
 var penStyle;
 var paint;
-// var locations;
+var locations;
 var lastX;
 var lastY;
 
+const penStyles = [];
 function setup() {
   paint = createCanvas(innerWidth - 250, innerHeight);
   pencilColor = "red";
@@ -157,12 +158,24 @@ function mouseDragged() {
       fill(bgColor);
       rect(locations[0][0], locations[0][1], width, width);
     } else if (penStyle === "circle") {
-      const x = locations[1][0] - locations[0][0];
-      const y = locations[1][1] - locations[0][1];
+      const x = locations[0][0];
+      const y = locations[0][1];
+      ellipseMode(CORNER);
+      // erase old
+      let xnew = lastX - locations[0][0];
+      let ynew = lastY - locations[0][1];
+      let radius = parseInt(sqrt(xnew ** 2 + ynew ** 2));
+      stroke(bgColor);
+      fill(bgColor);
+      ellipse(x, y, radius, radius);
+      // create new
+      xnew = locations[1][0] - locations[0][0];
+      ynew = locations[1][1] - locations[0][1];
+      radius = parseInt(sqrt(xnew ** 2 + ynew ** 2));
       stroke(pencilColor);
       fill(bgColor);
-      const radius = sqrt(y * y + x * x);
-      ellipse(mouseX, mouseY, radius * 2, radius * 2);
+      ellipseMode(CORNER);
+      ellipse(x, y, radius, radius);
     } else if (penStyle === "line") {
       stroke(pencilColor);
       line(locations[0][0], locations[0][1], locations[1][0], locations[1][1]);
