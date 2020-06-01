@@ -7,7 +7,6 @@ var locations;
 var lastX;
 var lastY;
 
-const penStyles = [];
 function setup() {
   paint = createCanvas(innerWidth - 250, innerHeight);
   pencilColor = "red";
@@ -174,7 +173,6 @@ function mouseDragged() {
       radius = parseInt(sqrt(xnew ** 2 + ynew ** 2));
       stroke(pencilColor);
       fill(bgColor);
-      ellipseMode(CORNER);
       ellipse(x, y, radius, radius);
     } else if (penStyle === "line") {
       stroke(pencilColor);
