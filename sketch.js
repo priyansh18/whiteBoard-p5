@@ -146,10 +146,16 @@ function mouseDragged() {
       fill(bgColor);
       rect(locations[0][0], locations[0][1], width, height);
     } else if (penStyle === "square") {
-      const height = locations[1][0] - locations[0][0];
+      // erase the last one
+      const widthLast = lastX - locations[0][0];
+      stroke(bgColor);
+      fill(bgColor);
+      rect(locations[0][0], locations[0][1], widthLast, widthLast);
+      // draw new one
+      const width = parseInt(locations[1][0] - locations[0][0]);
       stroke(pencilColor);
       fill(bgColor);
-      rect(locations[0][0], locations[0][1], height, height);
+      rect(locations[0][0], locations[0][1], width, width);
     } else if (penStyle === "circle") {
       const x = locations[1][0] - locations[0][0];
       const y = locations[1][1] - locations[0][1];
