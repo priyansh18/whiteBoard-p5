@@ -15,9 +15,21 @@ const penStyles = [
   "circle",
   "oval",
   "square",
+  "filledCircle",
+  "filledSquare",
 ];
 
-const cursors = ["hand", "cell", "hand", "hand", "hand", "hand", "hand"];
+const cursors = [
+  "hand",
+  "cell",
+  "hand",
+  "hand",
+  "hand",
+  "hand",
+  "hand",
+  "hand",
+  "hand",
+];
 
 function drawWithPencil(_pmouseX, _pmouseY, _mouseX, _mouseY) {
   return line(_pmouseX, _pmouseY, _mouseX, _mouseY);
@@ -49,21 +61,50 @@ function drawBox(isRectangle, bgColor, pencilColor, lastX, lastY, locations) {
   fill(bgColor);
   rect(locations[0][0], locations[0][1], width, height);
 }
+function drawFilledSquare(
+  isRectangle,
+  bgColor,
+  pencilColor,
+  lastX,
+  lastY,
+  locations
+) {
+  // erase the last one
+  const widthLast = lastX - locations[0][0];
+  let heightLast = lastY - locations[0][1];
+  heightLast = isRectangle ? heightLast : widthLast;
+
+  stroke(bgColor);
+  fill(bgColor);
+  rect(locations[0][0], locations[0][1], widthLast, heightLast);
+
+  // draw new one
+  const width = locations[1][0] - locations[0][0];
+  let height = locations[1][1] - locations[0][1];
+  height = isRectangle ? height : width;
+
+  stroke(pencilColor);
+  fill(pencilColor);
+  rect(locations[0][0], locations[0][1], width, height);
+}
 
 function drawCircle(isCircle, bgColor, pencilColor, lastX, lastY, locations) {
   // erase old
   ellipseMode(CORNER);
+
   const xLast = lastX - locations[0][0];
   let yLast = lastY - locations[0][1];
   yLast = isCircle ? xLast : yLast;
   let radius = parseInt(sqrt(xLast ** 2 + yLast ** 2));
 
   stroke(bgColor);
+  strokeWeight(drawSize * 1.8);
   fill(bgColor);
   ellipse(locations[0][0], locations[0][1], xLast, yLast);
 
   // create new
   ellipseMode(CORNER);
+  strokeWeight(drawSize);
   const xnew = locations[1][0] - locations[0][0];
   let ynew = locations[1][1] - locations[0][1];
   ynew = isCircle ? xnew : ynew;
@@ -73,14 +114,49 @@ function drawCircle(isCircle, bgColor, pencilColor, lastX, lastY, locations) {
   fill(bgColor);
   ellipse(locations[0][0], locations[0][1], xnew, ynew);
 }
+function drawFilledCircle(
+  isCircle,
+  bgColor,
+  pencilColor,
+  lastX,
+  lastY,
+  locations
+) {
+  // erase old
+  ellipseMode(CORNER);
+
+  const xLast = lastX - locations[0][0];
+  let yLast = lastY - locations[0][1];
+  yLast = isCircle ? xLast : yLast;
+  let radius = parseInt(sqrt(xLast ** 2 + yLast ** 2));
+
+  stroke(bgColor);
+  strokeWeight(drawSize * 1.8);
+  fill(bgColor);
+  ellipse(locations[0][0], locations[0][1], xLast, yLast);
+
+  // create new
+  ellipseMode(CORNER);
+  strokeWeight(drawSize);
+  const xnew = locations[1][0] - locations[0][0];
+  let ynew = locations[1][1] - locations[0][1];
+  ynew = isCircle ? xnew : ynew;
+  radius = parseInt(sqrt(xnew ** 2 + ynew ** 2));
+
+  stroke(pencilColor);
+  fill(pencilColor);
+  ellipse(locations[0][0], locations[0][1], xnew, ynew);
+}
 
 function drawLine(bgColor, pencilColor, lastX, lastY, locations) {
   // erase old
   stroke(bgColor);
+  strokeWeight(drawSize * 1.8);
   line(locations[0][0], locations[0][1], lastX, lastY);
 
   // create new
   stroke(pencilColor);
+  strokeWeight(drawSize);
   line(locations[0][0], locations[0][1], locations[1][0], locations[1][1]);
 }
 
@@ -185,6 +261,12 @@ function mouseDragged() {
         break;
       case "oval":
         drawCircle(false, bgColor, pencilColor, lastX, lastY, locations);
+        break;
+      case "filledSquare":
+        drawFilledSquare(false, bgColor, pencilColor, lastX, lastY, locations);
+        break;
+      case "filledCircle":
+        drawFilledCircle(true, bgColor, pencilColor, lastX, lastY, locations);
         break;
       case "line":
         drawLine(bgColor, pencilColor, lastX, lastY, locations);
